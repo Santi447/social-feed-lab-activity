@@ -1,7 +1,10 @@
 import axios from "axios";
+import {CONFIG}  from "../config";
 
 // TODO: create reusable axios api instance which uses the BASE_URL from config.ts
-
+const api = axios.create({
+  baseURL: CONFIG.BASE_URL
+});
 // helper function to get error message from api responses
 export function getApiErrorMessage(err: unknown): string {
   if (axios.isAxiosError(err)) {
@@ -14,3 +17,4 @@ export function getApiErrorMessage(err: unknown): string {
   }
   return "something went wrong";
 }
+export default api;
