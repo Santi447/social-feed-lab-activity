@@ -9,12 +9,9 @@ import {
 } from "react-native";
 import * as Yup from "yup";
 
+import { router } from "expo-router";
 import { useAuth } from "../src/auth/AuthContext";
-import  {Login}  from "../src/services/classFeed";
-import { router, Router } from "expo-router";
-import { getApiErrorMessage } from "@/src/services/api";
-
-
+import { Login } from "../src/services/classFeed";
 
 const Schema = Yup.object({
   username: Yup.string()
@@ -40,15 +37,15 @@ export default function LoginScreen() {
         initialValues={{ username: "" }}
         validationSchema={Schema}
         onSubmit={async (values, helpers) => {
-          try{
-          const response = await Login(values.username);
-          await signIn(response.token,response.user,);
-          router.replace("/feed");
-          }
-          catch(error){
-           setApiError(getApiErrorMessage(error));
-          }
-          finally{
+          try {
+            const response = await Login(values.username);
+            await signIn(response.token, response.user);
+            router.replace("/feed");
+          } catch (error) {
+            setApiError(
+              error instanceof Error ? error.message : JSON.stringify(error),
+            );
+          } finally {
             helpers.setSubmitting(false);
           }
 
