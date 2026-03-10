@@ -10,6 +10,11 @@ import {
 import * as Yup from "yup";
 
 import { useAuth } from "../src/auth/AuthContext";
+import  {Login}  from "../src/services/classFeed";
+import { router, Router } from "expo-router";
+import { getApiErrorMessage } from "@/src/services/api";
+
+
 
 const Schema = Yup.object({
   username: Yup.string()
@@ -35,6 +40,18 @@ export default function LoginScreen() {
         initialValues={{ username: "" }}
         validationSchema={Schema}
         onSubmit={async (values, helpers) => {
+          try{
+          const response = await Login(values.username);
+          await signIn(response.token,response.user,);
+          router.replace("/feed");
+          }
+          catch(error){
+           setApiError(getApiErrorMessage(error));
+          }
+          finally{
+            helpers.setSubmitting(false);
+          }
+
           // TODO: Call the api to log the user in (using the service function), sign in the user in the auth context,
           // and redirect the user to the feed (plus nice error handling and submitting logic)
         }}

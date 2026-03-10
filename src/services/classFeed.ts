@@ -11,9 +11,9 @@ import { Comment } from "../types";
 import { Post } from "../types";
 import { getApiErrorMessage } from "./api";
 
-export async function Login(User: User) {
+export async function Login(username: string) {
   try {
-    const response = await api.post("/login", { username: User.username });
+    const response = await api.post("/login", { username: username });
     return response.data;
   } catch (error) {
     throw new Error(getApiErrorMessage(error));
